@@ -33,6 +33,13 @@ npm start
 
 #Não esqueça de criar o banco de dados testeApi com a tabela tasks.
 
+CREATE TABLE tasks (
+    id_user INT AUTO_INCREMENT PRIMARY KEY, 
+    title_user VARCHAR(255) NOT NULL, 
+    status_user VARCHAR(100) NOT NULL,
+    created_user varchar(100) NOT NULL
+);
+
 
 
 
