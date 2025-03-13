@@ -1,0 +1,40 @@
+services:
+  # Serviço para o Backend (Node.js)
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "3000:3000"  # Mapeando a porta do backend
+    depends_on:
+      - db  # Garante que o banco de dados seja iniciado antes do backend
+    volumes:
+      - ./backend:/app  # Montando o código para refletir as alterações
+    environment:
+      - MYSQL_HOST=db  # Nome do serviço do banco de dados no docker-compose
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=usjt
+      - MYSQL_DB=testeApi
+
+  # Serviço para o Frontend (Apache ou Nginx)
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "80:80"  # Porta para o frontend
+    volumes:
+      - ./frontend:/usr/local/apache2/htdocs/  # Montando os arquivos estáticos do frontend
+    depends_on:
+      - backend  # O frontend depende do backend estar pronto
+
+  # Serviço para o Banco de Dados (MySQL)
+  db:
+    image: mysql:8.0
+    container_name: mysql_db
+    environment:
+      MYSQL_ROOT_PASSWORD: usjt  # Senha do usuário root
+      MYSQL_DATABASE: testeApi   # Banco de dados a ser criado
+    volumes:
+      - db_data:/var/lib/mysql  # Persistência dos dados do banco
+
+volumes:
+  db_data:  # Volume para persistir os dados do MySQL
